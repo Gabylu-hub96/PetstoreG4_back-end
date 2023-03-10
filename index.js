@@ -7,29 +7,26 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/api/pets", petsRouter);
+app.use("/api/Petshop", petsRouter);
 
-connectDB((err) => {
-  if (!err) {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT} `);
-    });
-    db = getDb();
-  }
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`server is running on ${PORT}`);
+  });
 });
 
-//API routes
-app.get("/pets", (req, res) => {
-  let pets = [];
+// //API routes
+// app.get("/pets", (req, res) => {
+//   let pets = [];
 
-  db.collection("pets")
-    .find()
-    .sort({ breed: 1 })
-    .forEach((pet) => pets.push(pet))
-    .then(() => {
-      res.status(200).json(pets);
-    })
-    .catch(() => {
-      res.status(500).json({ error: "Could not fetch the files" });
-    });
-});
+//   db.collection("pets")
+//     .find()
+//     .sort({ breed: 1 })
+//     .forEach((pet) => pets.push(pet))
+//     .then(() => {
+//       res.status(200).json(pets);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ error: "Could not fetch the files" });
+//     });
+// });
