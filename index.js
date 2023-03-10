@@ -9,17 +9,27 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/pets", petsRouter);
 
-app.get("/", (req, res) => {
-  res.send("<h1>Pets API</h1>");
+connectDB((err) => {
+  if (!err) {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT} `);
+    });
+    db = getDb();
+  }
 });
 
-//API
-app.get("/api/pets", (req, res) => {
-  res.json(pets);
-});
+//API routes
+app.get("/pets", (req, res) => {
+  let pets = [];
 
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT} `);
-  });
+  db.collection("pets")
+    .find()
+    .sort({ breed: 1 })
+    .forEach((pet) => pets.push(pet))
+    .then(() => {
+      res.status(200).json(pets);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "Could not fetch the files" });
+    });
 });

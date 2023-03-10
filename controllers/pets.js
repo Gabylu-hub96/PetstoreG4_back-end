@@ -20,7 +20,7 @@ const getAllPets = async (req, res) => {
 
 const getPetById = async (req, res) => {
   try {
-    const pets = await Pet.find({ _id: req.params.id });
+    const pets = await Pet.findOne({ id: req.params.id });
     if (pets.length === 0) {
       res.status(404).json({ message: "Pet Not Found" });
     }
@@ -33,7 +33,7 @@ const getPetById = async (req, res) => {
 const updatePet = async (req, res) => {
   try {
     const updatedPet = await Pet.findOneAndUpdate(
-      { _id: req.params.id },
+      { id: req.params.id },
       req.body,
       { new: true }
     );
