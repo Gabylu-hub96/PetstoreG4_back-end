@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/pets", petsRouter); // updated route
+app.use('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
 
 connectDB().then(() => {
   app.listen(PORT, () => {
