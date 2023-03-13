@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/api/pets", petsRouter); // updated route
+app.use("/api/Petshop", petsRouter); 
 app.use('/favicon.ico', (req, res) => {
   res.status(204).end();
-});
+}); //added middleware
 
 connectDB().then(() => {
   app.listen(PORT, () => {
