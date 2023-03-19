@@ -18,6 +18,20 @@ const getAllPets = async (req, res) => {
   }
 };
 
+const getPetsPaginated = async (req, res) => {
+  const page = req.query.p || 0;
+  const petsPerPage = 3;
+
+  try {
+    const pets = await Pet.find({})
+      .skip(page * petsPerPage)
+      .limit(petsPerPage);
+    res.json(pets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getPetById = async (req, res) => {
   try {
     const pets = await Pet.find({ _id: req.params.id });
@@ -60,6 +74,7 @@ const deletePet = async (req, res) => {
 
 module.exports = {
   createPet,
+  getPetsPaginated,
   getAllPets,
   getPetById,
   updatePet,
