@@ -72,6 +72,27 @@ const deletePet = async (req, res) => {
   }
 };
 
+const searchPets = async (req, res) => {
+  try {
+    const query = req.params.query;
+    if (!query || query.trim() === '') {
+      return res.status(400).json({ message: 'Please provide a valid search term' });
+    }
+
+    const pets = await Pet.find({});
+    const filteredPets = pets.filter(pet => {
+      return (
+        pet.animalType.toLowerCase().includes(req.params.query.toLowerCase()) ||
+        pet.breed.toLowerCase().includes(req.params.query.toLowerCase()) ||
+        pet.gender.toLowerCase().includes(req.params.query.toLowerCase())
+      );
+    });
+    res.json(filteredPets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 module.exports = {
   createPet,
   getPetsPaginated,
@@ -79,4 +100,5 @@ module.exports = {
   getPetById,
   updatePet,
   deletePet,
+  searchPets,
 };
